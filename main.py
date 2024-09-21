@@ -2,6 +2,7 @@ from web_automation import *
 from treatments_data import *
 import os
 
+
 def main_fn():
     web_automation = WebCaptureGraos()
     df_graos = web_automation.capture_value_graos()
