@@ -1,17 +1,13 @@
-import re
 import time
 from builtins import str
 import os
-from selenium import webdriver
-from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.edge.options import Options
 import pandas as pd
+from src.web_utils import get_driver_edge_private
+
 
 class WebCaptureGraos:
     def __init__(self):
@@ -30,9 +26,7 @@ class WebCaptureGraos:
         self.driver.close()
 
     def start_browser(self):
-        edge_options = Options()
-        edge_options.add_argument("--inprivate")  # Abre o navegador no modo InPrivate (anônimo)
-        self.driver = webdriver.Edge(options=edge_options)
+        self.driver = get_driver_edge_private()
         self.driver.get(self.url_system)
         self.driver.maximize_window()
         return self.driver
