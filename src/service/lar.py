@@ -15,9 +15,14 @@ class WebCaptureGraos:
         self.driver = None
 
     def capture_value_graos(self):
-        self.start_browser()
-        df_graos = self.select_option_by_text()
-        return df_graos
+        try:
+            self.start_browser()
+            df_graos = self.select_option_by_text()
+            return df_graos
+        except Exception as exc:
+            print(f"Ocorreu um erro ao extrair os dados da Lar Agro.\n{exc}")
+        finally:
+            self.driver.quit()
 
     def kill_edge_instances(self):
         os.system("taskkill /f /im msedge.exe")
@@ -62,7 +67,11 @@ class WebCaptureGraos:
 
         if bool_has_list_option:
             df_graos = pd.DataFrame(columns=['Unidade', 'Produto', 'Data', 'Cotação', 'Fechamento'])
+            count = 0
             for option_text in options_list:
+                count += 1
+                if count >= 11:
+                    break
                 try:
                     select_element = Select(self.driver.find_element(By.ID, select_id))
 
@@ -70,16 +79,16 @@ class WebCaptureGraos:
                     print(f"Opção '{option_text}' selecionada com sucesso!")
 
                     xpath_sbmt_enviar = "//button[@type='submit' and text()='Enviar']"
-                    loaded_operacoes_medianeira = False
+                    loaded_operacoes = False
 
                     try:
                         WebDriverWait(self.driver, 10).until(
                             ec.presence_of_element_located((By.XPATH, xpath_sbmt_enviar)))
-                        loaded_operacoes_medianeira = True
+                        loaded_operacoes = True
                     except Exception as exceptt:
                         print(f"Erro ao localizar o botão 'Enviar': {exceptt}")
 
-                    if loaded_operacoes_medianeira:
+                    if loaded_operacoes:
                         sbmt_enviar = self.driver.find_element(By.XPATH, xpath_sbmt_enviar)
                         retry_count = 0
 

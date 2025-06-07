@@ -16,8 +16,8 @@ def process():
             product = cols[0].text.split('\n')[0].strip()
             location = cols[1].text if len(cols) > 4 else cols[0].find_element(By.TAG_NAME, "span").text
 
-            price_div = cols[2].find_element(By.TAG_NAME, "div")
-            price_style = price_div.get_attribute("style")
+            #price_div = cols[2].find_element(By.TAG_NAME, "div")
+            #price_style = price_div.get_attribute("style")
             price = "Preço não extraível diretamente"
             update_date = cols[3].text if len(cols) > 4 else cols[2].text
 
